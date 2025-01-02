@@ -1,112 +1,483 @@
-
+﻿
 class Program
 {
     static void Main()
     {
-        // Task 1
-        int[] A = new int[5];
-        double[,] B = new double[3, 4];
-        Console.WriteLine("Enter 5 numbers for array A:");
-        for (int i = 0; i < 5; i++) A[i] = int.Parse(Console.ReadLine());
-        Random rnd = new Random();
-        for (int i = 0; i < 3; i++) for (int j = 0; j < 4; j++) B[i, j] = rnd.NextDouble() * 100;
+        //Multiply(2, 5);
 
-        Console.WriteLine("Array A: " + string.Join(" ", A));
-        Console.WriteLine("Array B:");
-        for (int i = 0; i < 3; i++) Console.WriteLine(string.Join(" ", Enumerable.Range(0, 4).Select(j => B[i, j].ToString("F2"))));
 
-        var allElements = A.Select(x => (double)x).Concat(B.Cast<double>());
-        double max = allElements.Max(), min = allElements.Min();
-        double sum = allElements.Sum(), product = allElements.Aggregate(1.0, (acc, x) => acc * x);
-        int evenSumA = A.Where(x => x % 2 == 0).Sum();
-        double oddColSumB = Enumerable.Range(0, 4).Where(c => c % 2 != 0).Sum(c => Enumerable.Range(0, 3).Sum(r => B[r, c]));
+        //Console.WriteLine(NumFibbonachi(8));
+        //Console.WriteLine(NumFibbonachi(10));
 
-        Console.WriteLine($"Max: {max}, Min: {min}, Sum: {sum}, Product: {product}, EvenSumA: {evenSumA}, OddColSumB: {oddColSumB}");
+        //Console.Write("[1] - HIGH;\n[2] - DOWN;\nEnter num 1-2: ");
+        //string str = Console.ReadLine();
+        //int num = Convert.ToInt32(str);
+        //Random random = new Random();
+        //Console.WriteLine("Enter size of arr: ");
+        //string str1 = Console.ReadLine();
+        //int size = Convert.ToInt32(str1);
+        //int[] arr = new int[size];
+        //for (int i = 0; i < size; i++)
+        //{
+        //    arr[i] = random.Next()% 100;
+        //}
+        //SortArr(num, arr);
 
-        // Task 2
-        int[,] C = new int[5, 5];
-        for (int i = 0; i < 5; i++) for (int j = 0; j < 5; j++) C[i, j] = rnd.Next(-100, 101);
-        var flatC = C.Cast<int>().ToList();
-        int maxC = flatC.Max(), minC = flatC.Min();
-        int minIndex = flatC.IndexOf(minC), maxIndex = flatC.IndexOf(maxC);
-        if (minIndex > maxIndex) (minIndex, maxIndex) = (maxIndex, minIndex);
-        int betweenSum = flatC.Skip(minIndex + 1).Take(maxIndex - minIndex - 1).Sum();
-        Console.WriteLine($"Sum between min and max: {betweenSum}");
 
-        // Task 3
-        Console.WriteLine("Enter a string to encrypt:");
-        string input = Console.ReadLine();
-        int shift = 3;
-        string Encrypt(string text, int s) => new string(text.Select(ch => char.IsLetter(ch) ? (char)(ch + (char.IsLower(ch) ? s : -s)) : ch).ToArray());
-        string encrypted = Encrypt(input, shift);
-        string decrypted = Encrypt(encrypted, -shift);
-        Console.WriteLine($"Encrypted: {encrypted}");
-        Console.WriteLine($"Decrypted: {decrypted}");
+        //City city = new City();
+        //city.SetInfo();
+        //city.ShowInfo();
 
-        // Task 4
-        int[,] matrix1 = { { 1, 2 }, { 3, 4 } };
-        int[,] matrix2 = { { 5, 6 }, { 7, 8 } };
-        int number = 2;
-        var multiplied = MultiplyMatrixByNumber(matrix1, number);
-        var added = AddMatrices(matrix1, matrix2);
-        var multipliedMatrices = MultiplyMatrices(matrix1, matrix2);
+        //Employer employer = new Employer();
+        //employer.SetInfo();
+        //employer.ShowInfo();
 
-        Console.WriteLine("Matrix multiplied by number:");
-        PrintMatrix(multiplied);
-        Console.WriteLine("Sum of matrices:");
-        PrintMatrix(added);
-        Console.WriteLine("Product of matrices:");
-        PrintMatrix(multipliedMatrices);
+        
+        Plane airplane1 = new Plane();
+        airplane1.ShowInfo();
+        Console.WriteLine();
 
-        // Task 5
-        Console.WriteLine("Enter an arithmetic expression (+, -):");
-        string expression = Console.ReadLine();
-        int result = expression.Split(new[] { '+', '-' })
-                               .Select(int.Parse)
-                               .Aggregate((x, y) => expression.Contains('-') ? x - y : x + y);
-        Console.WriteLine($"Result: {result}");
+        Plane airplane2 = new Plane("Boeing 747", "Boeing", 1969, "Passenger");
+        airplane2.ShowInfo();
+        Console.WriteLine();
+
+        Plane airplane3 = new Plane();
+        airplane3.SetInfo("Airbus A320", "Airbus");
+        airplane3.SetInfo(1988, "Passenger");
+        airplane3.ShowInfo();
+
+        Matrix matrix1 = new Matrix();
+        matrix1.SetData();
+        matrix1.ShowData();
+        Console.WriteLine($"Max: {matrix1.FindMax()}");
+        Console.WriteLine($"Min: {matrix1.FindMin()}");
+
+        int[,] array = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        Matrix matrix2 = new Matrix(3, 3);
+        matrix2.SetData(array);
+        matrix2.ShowData();
+        Console.WriteLine($"Max: {matrix2.FindMax()}");
+        Console.WriteLine($"Min: {matrix2.FindMin()}");
     }
 
-    static int[,] MultiplyMatrixByNumber(int[,] matrix, int number)
-    {
-        int rows = matrix.GetLength(0), cols = matrix.GetLength(1);
-        int[,] result = new int[rows, cols];
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++)
-                result[i, j] = matrix[i, j] * number;
-        return result;
-    }
 
-    static int[,] AddMatrices(int[,] matrix1, int[,] matrix2)
+    static void Multiply(int num1, int num2)
     {
-        int rows = matrix1.GetLength(0), cols = matrix1.GetLength(1);
-        int[,] result = new int[rows, cols];
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++)
-                result[i, j] = matrix1[i, j] + matrix2[i, j];
-        return result;
-    }
-
-    static int[,] MultiplyMatrices(int[,] matrix1, int[,] matrix2)
-    {
-        int rows1 = matrix1.GetLength(0), cols1 = matrix1.GetLength(1);
-        int rows2 = matrix2.GetLength(0), cols2 = matrix2.GetLength(1);
-        int[,] result = new int[rows1, cols2];
-        for (int i = 0; i < rows1; i++)
-            for (int j = 0; j < cols2; j++)
-                for (int k = 0; k < cols1; k++)
-                    result[i, j] += matrix1[i, k] * matrix2[k, j];
-        return result;
-    }
-
-    static void PrintMatrix(int[,] matrix)
-    {
-        int rows = matrix.GetLength(0), cols = matrix.GetLength(1);
-        for (int i = 0; i < rows; i++)
+        int multiply = 1;
+        if (num1 < num2)
         {
-            for (int j = 0; j < cols; j++)
-                Console.Write(matrix[i, j] + " ");
+            for (int i = num1; i <= num2; i++)
+            {
+                multiply *= i;
+            }
+        }
+        else
+        {
+            {
+                for (int i = num2; i <= num1; i++)
+                {
+                    multiply *= i;
+                }
+            }
+        }
+        Console.WriteLine(multiply);
+    }
+
+    static bool NumFibbonachi(int num)
+    {
+        if (num < 0) return false; 
+
+        int a = 0, b = 1;
+
+        while (b < num)
+        {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+
+        return b == num || num == 0;
+    }
+    static void SortArr(int num, int[] arr)
+    {
+        for (int i = 0; i < arr.Length; i++)
+        {
+            Console.WriteLine($"{i + 1}: {arr[i]}");
             Console.WriteLine();
         }
+        switch (num)
+        {
+        case 1:
+           for (int i = 0; i < arr.Length; i++)
+                {
+                    for (int j = i+1; j < arr.Length; j++)
+                    {
+                        if (arr[i] > arr[j])
+                        {
+                            int temp = arr[i];
+                            arr[i] = arr[j];
+                            arr[j] = temp;
+                        }
+                    }
+                }
+                break;
+            case 2:
+
+                for (int i = 0; i < arr.Length - 1; i++)
+                {
+                    for (int j = i + 1; j < arr.Length; j++)
+                    {
+                        if (arr[i] < arr[j])
+                        {
+                            int temp = arr[i];
+                            arr[i] = arr[j];
+                            arr[j] = temp;
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        for (int i = 0;i < arr.Length;i++)
+        {
+            Console.WriteLine($"{i+1}: {arr[i]}");
+        }
+    }
+}
+
+class City
+{
+    private string cityName;
+    private string countryName;
+    private int countOfPeople;
+    private int cityPhoneCode;
+    private string[] districts;
+
+    public City() { }
+
+    public City(string cityName, string countryName, int countOfPeople, int cityPhoneCode, string[] districts)
+    {
+        this.cityName = cityName;
+        this.countryName = countryName;
+        this.countOfPeople = countOfPeople;
+        this.cityPhoneCode = cityPhoneCode;
+        this.districts = districts;
+    }
+
+    public string CityName
+    {
+        get { return cityName; }
+        set { cityName = value; }
+    }
+
+    public string CountryName
+    {
+        get { return countryName; }
+        set { countryName = value; }
+    }
+
+    public int CountOfPeople
+    {
+        get { return countOfPeople; }
+        set { countOfPeople = value; }
+    }
+
+    public int CityPhoneCode
+    {
+        get { return cityPhoneCode; }
+        set { cityPhoneCode = value; }
+    }
+
+    public string[] Districts
+    {
+        get { return districts; }
+        set { districts = value; }
+    }
+
+    public void ShowInfo()
+    {
+        Console.WriteLine($"City name: {cityName}");
+        Console.WriteLine($"Country name: {countryName}");
+        Console.WriteLine($"Population: {countOfPeople}");
+        Console.WriteLine($"City phone code: {cityPhoneCode}");
+        Console.WriteLine("Districts: " + (districts != null ? string.Join(", ", districts) : "No districts"));
+    }
+
+    public void SetInfo()
+    {
+        Console.WriteLine("Enter city name: ");
+        cityName = Console.ReadLine();
+
+        Console.WriteLine("Enter country name: ");
+        countryName = Console.ReadLine();
+
+        Console.WriteLine("Enter population: ");
+        while (!int.TryParse(Console.ReadLine(), out countOfPeople) || countOfPeople < 0)
+        {
+            Console.WriteLine("Invalid input. Please enter a positive integer for population.");
+        }
+
+        Console.WriteLine("Enter city phone code: ");
+        while (!int.TryParse(Console.ReadLine(), out cityPhoneCode) || cityPhoneCode < 0)
+        {
+            Console.WriteLine("Invalid input. Please enter a positive integer for city phone code.");
+        }
+
+        Console.WriteLine("Enter the number of districts: ");
+        int numDistricts;
+        while (!int.TryParse(Console.ReadLine(), out numDistricts) || numDistricts < 0)
+        {
+            Console.WriteLine("Invalid input. Please enter a positive integer for the number of districts.");
+        }
+
+        districts = new string[numDistricts];
+        Console.WriteLine("Enter district names:");
+        for (int i = 0; i < numDistricts; i++)
+        {
+            Console.Write($"District {i + 1}: ");
+            districts[i] = Console.ReadLine();
+        }
+    }
+}
+
+class Employer
+{
+    private string name;
+    private string surname;
+    private string dadname;
+    private string birthday;
+    private int phone_number;
+    private string email;
+    private string position;
+    private string work;
+
+    public Employer()
+    {
+
+    }
+    public Employer(string name, string surname, string dadname, string birthday, int phone_number, string email, string position, string work)
+    {
+        this.name = name;
+        this.surname = surname;
+        this.dadname = dadname;
+        this.birthday = birthday;
+        this.phone_number = phone_number;
+        this.email = email;
+        this.position = position;
+        this.work = work;
+    }
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+    public string Surname
+    {
+        get { return surname; }
+        set { surname = value; }
+    }
+    public string Dadname
+    {
+        get { return dadname; }
+        set { dadname = value; }
+    }
+    public string Birthday
+    {
+        get { return birthday; }
+        set { birthday = value; }
+    }
+    public int PhoneNumber
+    {
+        get { return phone_number; }
+        set { phone_number = value; }
+    }
+    public string Email
+    {
+        get { return email; }
+        set { email = value; }
+    }
+    public string Position
+    {
+        get { return position; }
+        set { position = value; }
+    }
+    public string Work
+    {
+        get { return work; }
+        set { work = value; }
+    }
+
+    public void SetInfo()
+    {
+        Console.WriteLine("Enter name: ");
+        name = Console.ReadLine();
+        Console.WriteLine("Enter surname: ");
+        surname = Console.ReadLine();
+        Console.WriteLine("Enter dadname: ");
+        dadname = Console.ReadLine();
+        Console.WriteLine("Enter Birthday: ");
+        birthday = Console.ReadLine();
+        Console.WriteLine("Enter phone number: ");
+        while(!int.TryParse(Console.ReadLine(),out phone_number))
+        {
+            Console.WriteLine("Invalid value");
+        }
+        Console.WriteLine("Enter email: ");
+        email = Console.ReadLine();
+        Console.WriteLine("Enter position: ");
+        position = Console.ReadLine();
+        Console.WriteLine("Enter work: ");
+        work = Console.ReadLine();
+    }
+
+    public void ShowInfo()
+    {
+        Console.WriteLine($"PIB: {surname}{name}{dadname}");
+        Console.WriteLine($"Birth date: {birthday}");
+        Console.WriteLine($"Phone number: {phone_number}");
+        Console.WriteLine($"Email: {email}");
+        Console.WriteLine($"Position: {position}");
+        Console.WriteLine($"Work: {work}");
+    }
+}
+
+class Plane
+{
+    private string name;
+    private string vurobnik;
+    private int year;
+    private string type;
+
+    public Plane()
+    {
+
+    }
+    public Plane(string name, string vurobnik, int year, string type)
+    {
+        this.name = name;
+        this.vurobnik = vurobnik;
+        this.year = year;
+        this.type = type;
+    }
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+    public string Vurobnik
+    {
+        get { return vurobnik; }
+        set { vurobnik = value; }
+    }
+    public int Year
+    {
+        get { return year; }
+        set { year = value; }
+    }
+    public string Type
+    {
+        get { return type; }
+        set { type = value; }
+    }
+    public void SetInfo(string name, string manufacturer, int yearOfProduction, string type)
+    {
+        this.name = name;
+        this.vurobnik = manufacturer;
+        this.year = yearOfProduction;
+        this.type = type;
+    }
+
+   
+    public void SetInfo(string name, string manufacturer)
+    {
+        this.name = name;
+        this.vurobnik = manufacturer;
+    }
+
+    
+    public void SetInfo(int yearOfProduction, string type)
+    {
+        this.year = yearOfProduction;
+        this.type = type;
+    }
+    public void ShowInfo()
+    {
+        Console.WriteLine($"Name: {name}");
+        Console.WriteLine($"Vurobnik: {vurobnik}");
+        Console.WriteLine($"Year: {year}");
+        Console.WriteLine($"Type: {type}");
+    }
+}
+
+
+class Matrix
+{
+    private int[,] data;
+
+    public Matrix()
+    {
+        data = new int[3, 3];
+    }
+
+    public Matrix(int rows, int cols)
+    {
+        data = new int[rows, cols];
+    }
+
+    public void SetData()
+    {
+        Console.WriteLine("Enter elements of the matrix:");
+        for (int i = 0; i < data.GetLength(0); i++)
+        {
+            for (int j = 0; j < data.GetLength(1); j++)
+            {
+                Console.Write($"Element [{i + 1},{j + 1}]: ");
+                data[i, j] = int.Parse(Console.ReadLine());
+            }
+        }
+    }
+
+    public void SetData(int[,] array)
+    {
+        if (array.GetLength(0) == data.GetLength(0) && array.GetLength(1) == data.GetLength(1))
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+                for (int j = 0; j < array.GetLength(1); j++)
+                    data[i, j] = array[i, j];
+        }
+    }
+
+    public void ShowData()
+    {
+        for (int i = 0; i < data.GetLength(0); i++)
+        {
+            for (int j = 0; j < data.GetLength(1); j++)
+            {
+                Console.Write(data[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public int FindMax()
+    {
+        int max = data[0, 0];
+        for (int i = 0; i < data.GetLength(0); i++)
+            for (int j = 0; j < data.GetLength(1); j++)
+                if (data[i, j] > max)
+                    max = data[i, j];
+        return max;
+    }
+
+    public int FindMin()
+    {
+        int min = data[0, 0];
+        for (int i = 0; i < data.GetLength(0); i++)
+            for (int j = 0; j < data.GetLength(1); j++)
+                if (data[i, j] < min)
+                    min = data[i, j];
+        return min;
     }
 }
