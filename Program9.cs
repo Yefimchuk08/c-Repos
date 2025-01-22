@@ -1,5 +1,5 @@
 // Завдання 1: Океанаріум
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
 
